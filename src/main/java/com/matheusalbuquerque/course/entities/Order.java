@@ -11,14 +11,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Table(name = "tb_order")// nomeando a tabela pois a palavra Order é reservada do Sql e pode dar comflito
-public class Order  implements Serializable{
+public class Order implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id //informando para o (JPA) a chave primária da tabela do banco de dados
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // informando ao (JPA) que o campo id é auto-increment
-	private long id;
+	private Long id;
+	
+	@JsonFormat (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")     //garante que o Instant sera mostrado formatado de string ISO 8601, no padrao UTC no json
 	private Instant moment; // disponivel a partir do versão 08 do java podendo subistituir o Date
 
 	@ManyToOne // informando ao jpa a a relação de muitos pra um(Ordes -> User)
@@ -28,18 +32,18 @@ public class Order  implements Serializable{
 	public Order() {// construtor padrão sem argumentos (obrigatorio no spring)
 	}
 
-	public Order(long id, Instant moment, User client) { //construtor recebendo atributos
+	public Order(Long id, Instant moment, User client) { //construtor recebendo atributos
 		super();
 		this.id = id;
 		this.moment = moment;
 		this.client = client;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

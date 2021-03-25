@@ -11,9 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-@Entity //anotation passando para o jpa como ele vai converter os objetos para o modelo relacional
-@Table(name = "tb_user")
-public class User implements Serializable { // implements Serializable, interface que transforma os objetos em cadeias de bytes para que possam trafegar na rede e ser gravado em arquivos etc... obs será necessário informar um numero de serie padram para retirar possivel erro
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Entity     //anotation passando para o jpa como ele vai converter os objetos para o modelo relacional
+@Table(name = "tb_user")     // nomeando explicitamente a coluna
+public class User implements Serializable {     // implements Serializable, interface que transforma os objetos em cadeias de bytes para que possam trafegar na rede e ser gravado em arquivos etc... obs será necessário informar um numero de serie padram para retirar possivel erro
 	
 	private static final long serialVersionUID = 1L; //final = constante, id obrigatório necessario para uso do serializable
 	
@@ -25,7 +27,8 @@ public class User implements Serializable { // implements Serializable, interfac
 	private String phone;
 	private String password;
 	
-	@OneToMany(mappedBy = "client") // informando ao jpa a a relação de um para muitos(User -> Ordes)
+	@JsonIgnore     // evita o looping infinito em relaçoes de mao dupla, senao ocorrera chamadas infinitas do tipo, pedido/usuario/pedido/usuario...
+	@OneToMany(mappedBy = "client")     // informando ao jpa  a relação de um para muitos(User -> Ordes)
 	private List<Order> orders  = new ArrayList<>();
 	
 	public User() { //construtor vazio obrigatório quando se usa o spring boot
