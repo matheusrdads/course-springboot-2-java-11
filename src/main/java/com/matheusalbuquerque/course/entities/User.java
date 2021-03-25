@@ -1,13 +1,18 @@
 package com.matheusalbuquerque.course.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity; //importação especificação do jpa(optar pela especificação e não implementação)
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity //anotation passando para o jpa como ele vai converter os objetos para o modelo relacional
+@Table(name = "tb_user")
 public class User implements Serializable { // implements Serializable, interface que transforma os objetos em cadeias de bytes para que possam trafegar na rede e ser gravado em arquivos etc... obs será necessário informar um numero de serie padram para retirar possivel erro
 	
 	private static final long serialVersionUID = 1L; //final = constante, id obrigatório necessario para uso do serializable
@@ -20,6 +25,9 @@ public class User implements Serializable { // implements Serializable, interfac
 	private String phone;
 	private String password;
 	
+	@OneToMany(mappedBy = "client") // informando ao jpa a a relação de um para muitos(User -> Ordes)
+	private List<Order> orders  = new ArrayList<>();
+	
 	public User() { //construtor vazio obrigatório quando se usa o spring boot
 		
 	}
@@ -31,6 +39,7 @@ public class User implements Serializable { // implements Serializable, interfac
 		this.email = email;
 		this.phone = phone;
 		this.password = password;
+
 	}
 
 	public Long getId() { //getters e setters. métodos especializados em dar um acesso controlado aos atributos | get, retorna o conteudo do atributo e set permite sua alteração
@@ -72,6 +81,10 @@ public class User implements Serializable { // implements Serializable, interfac
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public List<Order> getOrders() {
+		return orders;
+	}
 
 	@Override
 	public int hashCode() { // hashCode e equals, critério de comparação entre objetos e tabelha Hash (apenas o atributo "id" foi usado como parametro nesse exemplo)
@@ -97,6 +110,8 @@ public class User implements Serializable { // implements Serializable, interfac
 			return false;
 		return true;
 	}
+
+
 	
 	
 }
