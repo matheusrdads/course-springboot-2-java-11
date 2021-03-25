@@ -8,9 +8,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import com.matheusalbuquerque.course.entities.Category;
 import com.matheusalbuquerque.course.entities.Order;
 import com.matheusalbuquerque.course.entities.User;
 import com.matheusalbuquerque.course.entities.enums.OrderStatus;
+import com.matheusalbuquerque.course.repositories.CategoryRepository;
 import com.matheusalbuquerque.course.repositories.OrderRepository;
 import com.matheusalbuquerque.course.repositories.UserRepository;
 
@@ -24,9 +26,22 @@ public class TesteConfig implements CommandLineRunner{     //(implements Command
 
 	@Autowired     //permitindo que o spring resolva essa dependencia e  associe uma instancia de userRepository ao TestConfig
 	private OrderRepository orderRepository;    //informando que um objeto depende de outro no spring (injecao de dependencias) (objeto que acessa os dados) 
+	
+	@Autowired
+	private CategoryRepository categoryRepository;
+	
+	
 	@Override
 	public void run(String... args) throws Exception {    //Tudo que estiver dentro desse metodo será executado quando a aplicação iniciar
 	// TODO Auto-generated method stub
+		
+	Category cat1 = new Category(null, "Electronics");
+	Category cat2 = new Category(null, "Books");
+	Category cat3 = new Category(null, "Computers"); 
+	
+	categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3)); //salvando no banco
+	
+		
 	User u1 = new User(null, "Maria Brown", "maria@gmail.com", "988888888", "123456");
 	User u2 = new User(null, "Alex Green", "alex@gmail.com", "977777777", "123456"); 
 	
@@ -35,7 +50,7 @@ public class TesteConfig implements CommandLineRunner{     //(implements Command
 	Order o3 = new Order(null, Instant.parse("2019-07-22T15:21:22Z"), OrderStatus.WAITING_PAYMENT, u1);
 
 	userRepository.saveAll(Arrays.asList(u1, u2));     //criando uma lista e passando os objetos que seram salvos no banco
-	orderRepository.saveAll(Arrays.asList(o1, o2, o3));
+	orderRepository.saveAll(Arrays.asList(o1, o2, o3));     //salvando no banbo
 	}
 
 	
