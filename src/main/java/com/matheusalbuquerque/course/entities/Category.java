@@ -8,8 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity     //mapeamento jpa
@@ -22,7 +24,8 @@ public class Category implements Serializable {     // implements Serializable, 
 	private Long id;
 	private String name;
 	
-	@Transient //ivita que o spring tente interpretar
+	@JsonIgnore												//evita looping infinito em associações bidirecionais
+	@ManyToMany(mappedBy = "categories") 				//essa coleção está sendo mapeada pela coleção categories da entity Product
 	private Set<Product> products = new HashSet<>();
 	
 	public Category() {

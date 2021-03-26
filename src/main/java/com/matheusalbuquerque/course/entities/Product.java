@@ -8,8 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 
 @Entity
@@ -28,9 +30,13 @@ public class Product implements Serializable {     // implements Serializable, i
 	private String imgUrl;
 	
 	
-	// category iniciou instanciada para garantir que nao se inicie nula, mas sim vazi
-	@Transient //ivita que o spring tente interpretar
-	private Set<Category> categories = new HashSet<>(); //set é uma interface que representa um conjunto. garante que não haverá um produto da mesma categoria (um produto só pode ter uma categoria)
+	// category iniciou instanciada para garantir que nao se inicie nula, mas sim vazia
+	
+	@ManyToMany									//mapeando coleção transformando acoleção da classe em tabela de assocção que tem no modelo relacional(Sql) - muitos para muitos
+	@JoinTable(name = "tb_product_category",
+	joinColumns = @JoinColumn(name = "product_id"),			//chave estrangeira produto_id dentro da tabela tb_product_category
+	inverseJoinColumns = @JoinColumn(name = "category_id"))		//definin a chave estrangeira da outra entidade "category" que tbm estará na tabela associativa tb_product_category (inverseJoinColumns simplifica a associação da outra chave estrangeira da relação)
+	private Set<Category> categories = new HashSet<>(); 		//(coleção de categorias). "Set" é uma interface que representa um conjunto. garante que não haverá um produto da mesma categoria (um produto só pode ter uma categoria)
 
 	public Product() {
 	}

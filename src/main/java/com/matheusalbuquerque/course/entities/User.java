@@ -17,10 +17,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "tb_user")     // nomeando explicitamente a coluna
 public class User implements Serializable {     // implements Serializable, interface que transforma os objetos em cadeias de bytes para que possam trafegar na rede e ser gravado em arquivos etc... obs será necessário informar um numero de serie padram para retirar possivel erro
 	
-	private static final long serialVersionUID = 1L; //final = constante, id obrigatório necessario para uso do serializable
+	private static final long serialVersionUID = 1L; 	//final = constante, id obrigatório necessario para uso do serializable
 	
-	@Id //informando para o (JPA) a chave primária da tabela do banco de dados
-	@GeneratedValue(strategy = GenerationType.IDENTITY) // informando ao (JPA) que o campo id é auto-increment
+	@Id 													//informando para o (JPA) a chave primária da tabela do banco de dados
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 		// informando ao (JPA) que o campo id é auto-increment
 	private Long id;
 	private String name;
 	private String email;
@@ -28,7 +28,7 @@ public class User implements Serializable {     // implements Serializable, inte
 	private String password;
 	
 	@JsonIgnore     // evita o looping infinito em relaçoes de mao dupla, senao ocorrera chamadas infinitas do tipo, pedido/usuario/pedido/usuario...
-	@OneToMany(mappedBy = "client")     // informando ao jpa  a relação de um para muitos(User -> Ordes)
+	@OneToMany(mappedBy = "client")     // informando ao jpa  a relação de um para muitos(User -> Ordes), "client_id" é a chave estrangeira que irá aparecer na tabela pedidos que contem o id do usuario referente ao pedido
 	private List<Order> orders  = new ArrayList<>();
 	
 	public User() { //construtor vazio obrigatório quando se usa o spring boot
