@@ -26,7 +26,7 @@ public class Product implements Serializable {     // implements Serializable, i
 	private Long id;
 	private String name;
 	private String description;
-	private Double prive;
+	private Double price;
 	private String imgUrl;
 	
 	
@@ -41,12 +41,12 @@ public class Product implements Serializable {     // implements Serializable, i
 	public Product() {
 	}
 
-	public Product(Long id, String name, String description, Double prive, String imgUrl) {     //nao se coloca colecoes em construtores(ela ja foi instanciada  a cima
+	public Product(Long id, String name, String description, Double price, String imgUrl) {     //nao se coloca colecoes em construtores(ela ja foi instanciada  a cima
 		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
-		this.prive = prive;
+		this.price = price;
 		this.imgUrl = imgUrl;
 
 	}
@@ -75,12 +75,12 @@ public class Product implements Serializable {     // implements Serializable, i
 		this.description = description;
 	}
 
-	public Double getPrive() {
-		return prive;
+	public Double getPrice() {
+		return price;
 	}
 
-	public void setPrive(Double prive) {
-		this.prive = prive;
+	public void setPrice(Double price) {
+		this.price = price;
 	}
 
 	public String getImgUrl() {

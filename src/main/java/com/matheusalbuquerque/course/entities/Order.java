@@ -2,6 +2,8 @@ package com.matheusalbuquerque.course.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -32,6 +35,9 @@ public class Order implements Serializable{
 	@JoinColumn(name = "client_id")     		//nomeando uma chave estrangeira "client_id"
 	private User client;     						//associação um pedido tem apenas um cliente | servirá de mapeamento na classe User
 
+	@OneToMany(mappedBy = "id.order")
+	private Set<OrderItem> items = new HashSet<>();
+	
 	public Order() {   									 //construtor padrão sem argumentos (obrigatorio no spring)
 	}
 
@@ -61,11 +67,11 @@ public class Order implements Serializable{
 
 	
 	public OrderStatus getOrderStatus() {
-		return OrderStatus.valueOf(orderStatus);    //orderStatus está como interge internamente na classe, aqui será convertido de numero inteiro interno da classe para orderStatus e ficar visivel no get
+		return OrderStatus.valueOf(orderStatus);    		//orderStatus está como interge internamente na classe, aqui será convertido de numero inteiro interno da classe para orderStatus e ficar visivel no get
 	}
 
-	public void setOrderStatus(OrderStatus orderStatus) {    //prcesso inverso, recebendo um orderStatus e gravando internamente um numero inteiro com ".getCode()"
-		if (orderStatus != null) {     //evitando receber valor nulo para construir o objeto
+	public void setOrderStatus(OrderStatus orderStatus) {    		//prcesso inverso, recebendo um orderStatus e gravando internamente um numero inteiro com ".getCode()"
+		if (orderStatus != null) {     							//evitando receber valor nulo para construir o objeto
 		this.orderStatus = orderStatus.getCode();
 		}
 	}
@@ -76,6 +82,10 @@ public class Order implements Serializable{
 
 	public void setClient(User client) {
 		this.client = client;
+	}
+	
+	public Set<OrderItem> getItems() {
+		return items;
 	}
 
 	@Override
