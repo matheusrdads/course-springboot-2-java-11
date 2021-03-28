@@ -1,13 +1,17 @@
 package com.matheusalbuquerque.course.resources;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.matheusalbuquerque.course.entities.User; // import da classe User
 import com.matheusalbuquerque.course.services.UserService;
@@ -32,4 +36,10 @@ public class UserResource {
 		return ResponseEntity.ok().body(obj);
 	}
 	
+	@PostMapping
+	public ResponseEntity<User> insert(@RequestBody User obj) {						//end point recebento um objeto do tipo user. @RequestBody recenbendo os dados no corpo da requisição 
+		obj = service.insert(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).body(obj);									// no padrao HTTP quando retornamos um 201, é esperado que a resposta contenha um cabecalho chamado location contendo o novo indereço que voce inseriu
+	}
 }

@@ -63,6 +63,11 @@ public class OrderItem implements Serializable {     // implements Serializable,
 	public void setPrice(Double price) {
 		this.price = price;
 	}
+	
+
+	public Double getSubTotal() {			// na "EE",  plataforma interprise do java o que importa é o método "get", isso é necessário para o resultado aparescer no json
+		return price * quantity;
+	}
 
 	@Override
 	public int hashCode() {
@@ -71,6 +76,7 @@ public class OrderItem implements Serializable {     // implements Serializable,
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
