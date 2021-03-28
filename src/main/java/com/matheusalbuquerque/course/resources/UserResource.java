@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,6 +48,12 @@ public class UserResource {
 	@DeleteMapping(value = "/{id}") 													//passando o id que sera deletado
 	public ResponseEntity<Void> delete(@PathVariable Long id){							// @PathVariable para o Long id ser reconhecido como uma variavel da url
 		service.delete(id);
-		return ResponseEntity.noContent().build();												// noContent retorna uma resposta vazia ja com o codigo 204
+		return ResponseEntity.noContent().build();										// noContent retorna uma resposta vazia ja com o codigo 204
+	}
+	
+	@PutMapping(value = "/{id}") 
+	public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User obj){
+		obj = service.update(id, obj);													//usuario atualizado
+		return ResponseEntity.ok().body(obj);
 	}
 }
