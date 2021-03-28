@@ -27,4 +27,8 @@ public class UserService {
 	public User	insert(User obj) {								// retorna o usuario salvo (inserindo no banco de dados um objeto do tipo user
 		return repository.save(obj);									 // por padrao ja retorna o objeto salvo
 	}
+	
+	public void delete(Long id) {
+		repository.deleteById(id);
+	}
 }
