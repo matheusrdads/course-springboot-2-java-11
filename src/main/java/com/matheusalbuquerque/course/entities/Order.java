@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -32,11 +34,14 @@ public class Order implements Serializable{
 	private Integer orderStatus;    				//interger é um tratamenro interno da classe Order apenas para informar expicitamente ao banco de dados que será gravado um numero inteiro, externamente ainda será um OrderStatus
 	
 	@ManyToOne     							//informando ao jpa a a relação de muitos pra um(Ordes -> User)
-	@JoinColumn(name = "client_id")     		//nomeando uma chave estrangeira "client_id"
-	private User client;     						//associação um pedido tem apenas um cliente | servirá de mapeamento na classe User
+	@JoinColumn(name = "client_id")     		//nomeando uma chave estrangeira "client_id", que receberá id de "client"
+	private User client;     						//associação, um pedido tem apenas um cliente | servirá de mapeamento na classe User
 
 	@OneToMany(mappedBy = "id.order")
 	private Set<OrderItem> items = new HashSet<>();
+	
+	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)              //mapeando as entidades na relação 1 para 1, para ter o mesmo numero de id ",cascade = cascade.ALL"    
+	private Payment payment;
 	
 	public Order() {   									 //construtor padrão sem argumentos (obrigatorio no spring)
 	}
@@ -84,6 +89,15 @@ public class Order implements Serializable{
 		this.client = client;
 	}
 	
+	
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
+	}
+
 	public Set<OrderItem> getItems() {
 		return items;
 	}

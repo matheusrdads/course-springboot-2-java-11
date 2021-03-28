@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import com.matheusalbuquerque.course.entities.Category;
 import com.matheusalbuquerque.course.entities.Order;
 import com.matheusalbuquerque.course.entities.OrderItem;
+import com.matheusalbuquerque.course.entities.Payment;
 import com.matheusalbuquerque.course.entities.Product;
 import com.matheusalbuquerque.course.entities.User;
 import com.matheusalbuquerque.course.entities.enums.OrderStatus;
@@ -88,5 +89,9 @@ public class TesteConfig implements CommandLineRunner{     	//(implements Comman
 	
 	orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
 	
+	Payment pay1 = new Payment(null, Instant.parse("2019-06-20T21:53:07Z"),o1);   // para salvar um objeto dependente na relação 1 pra 1, não se chama o repository do propio objeto
+	o1.setPayment(pay1);															// associando o pedido o1 ao pagamento pay1. depois disso poderá salvar
+	
+	orderRepository.save(o1);															//salvando novamente o pedido, e o jpa irá salvar o pagamento desse pedido
 	}
 }

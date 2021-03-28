@@ -28,7 +28,7 @@ public class User implements Serializable {     		// implements Serializable, in
 	
 	@JsonIgnore    															 // evita o looping infinito em relaçoes de mao dupla, senao ocorrera chamadas infinitas do tipo, pedido/usuario/pedido/usuario...
 	@OneToMany(mappedBy = "client")     										// informando ao jpa a relação de um para muitos(User -> Ordes), "client_id" é a chave estrangeira que irá aparecer na tabela pedidos que contem o id do usuario referente ao pedido
-	private List<Order> orders  = new ArrayList<>();								
+	private List<Order> orders = new ArrayList<>();								
 	
 	public User() { 																//construtor vazio obrigatório quando se usa o spring boot
 		
